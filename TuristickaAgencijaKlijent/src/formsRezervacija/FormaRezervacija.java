@@ -7,10 +7,16 @@ package formsRezervacija;
 import controller.KlijentskiKontroler;
 import domain.Klijent;
 import domain.Rezervacija;
+import domain.TuristickaAgencija;
 import forms.MainForma;
+import java.awt.Window;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import session.Session;
 
 /**
  *
@@ -21,8 +27,8 @@ public class FormaRezervacija extends javax.swing.JDialog {
     /**
      * Creates new form FormaRezervacija
      */
-    public FormaRezervacija(FormaPretragaRezervacija parent, boolean modal, Rezervacija r, int signal) {
-        super(parent, modal);
+    public FormaRezervacija(Window parent, boolean modal, Rezervacija r, int signal) {
+        super(parent, modal ? ModalityType.APPLICATION_MODAL : ModalityType.MODELESS);
         initComponents();
         setLocationRelativeTo(null);
         pomocna=r;
@@ -36,64 +42,42 @@ public class FormaRezervacija extends javax.swing.JDialog {
                 jTextFieldDatumOd.setEditable(true);
                 jTextFieldDatumDo.setEditable(true);
                 jTextFieldCena.setEditable(true);
-                jComboBoxKlijent.setEditable(true);
+                jComboBoxKlijent.setEnabled(true);
                 jButtonIzmeni.setEnabled(false);
+                jButtonDodaj.setEnabled(true);
                 break;
-            case 1:
-                jTextFieldIme.setText(""+k.getIme());
-                jTextFieldPrezime.setText(""+k.getPrezime());
-                jTextFieldTelefon.setText(""+k.getTelefon());
-                jTextFieldEmail.setText(""+k.getEmail());
-                jTextFieldAdresa.setText(""+k.getAdresa());
-                this.popuniNacionalnost();
-                jComboBoxNacionalnost.setSelectedItem(k.getNacionalnost());
-                jTextFieldIme.setEditable(false);
-                jTextFieldPrezime.setEditable(false);
-                jTextFieldTelefon.setEditable(false);
-                jTextFieldEmail.setEditable(false);
-                jTextFieldAdresa.setEditable(false);
-                jComboBoxNacionalnost.setEnabled(false);
+            case 1:                
+                setTitle("Detalji rezervacije");
                 jButtonDodaj.setEnabled(false);
                 jButtonIzmeni.setEnabled(false);
-                
-                setTitle("Detalji rezervacije");
-                jTextFieldDatumOd.setText("");
-                jTextFieldDatumDo.setText("");
-                jTextFieldCena.setText("");
+                SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+                jTextFieldDatumOd.setText(sdf.format(pomocna.getDatum()));
+                jTextFieldDatumDo.setText(sdf.format(pomocna.getDatum()));
+                jTextFieldCena.setText(pomocna.getCena()+" €");
+                this.popuniKlijente();
+                jTextFieldDatumOd.setEditable(false);
+                jTextFieldDatumDo.setEditable(false);
+                jTextFieldCena.setEditable(false);
+                jComboBoxKlijent.setEnabled(false);
+                break;
+            case 2:
+                setTitle("Izmena rezervacije");
+                jButtonDodaj.setEnabled(false);
+                SimpleDateFormat sdf1 = new SimpleDateFormat("dd.MM.yyyy");
+                jTextFieldDatumOd.setText(sdf1.format(pomocna.getDatum()));
+                jTextFieldDatumDo.setText(sdf1.format(pomocna.getDatum()));
+                jTextFieldCena.setText(pomocna.getCena()+" €");
                 this.popuniKlijente();
                 jTextFieldDatumOd.setEditable(true);
                 jTextFieldDatumDo.setEditable(true);
                 jTextFieldCena.setEditable(true);
-                jComboBoxKlijent.setEditable(true);
-                jButtonIzmeni.setEnabled(false);
-                break;
-            case 2:
-                setTitle("Izmena klijenta");
-                jTextFieldIme.setText(""+k.getIme());
-                jTextFieldPrezime.setText(""+k.getPrezime());
-                jTextFieldTelefon.setText(""+k.getTelefon());
-                jTextFieldEmail.setText(""+k.getEmail());
-                jTextFieldAdresa.setText(""+k.getAdresa());
-                this.popuniNacionalnost();
-                jComboBoxNacionalnost.setSelectedItem(k.getNacionalnost());
-                jTextFieldIme.setEditable(false);
-                jTextFieldPrezime.setEditable(false);
-                jTextFieldTelefon.setEditable(true);
-                jTextFieldEmail.setEditable(true);
-                jTextFieldAdresa.setEditable(true);
-                jComboBoxNacionalnost.setEnabled(false);
-                jButtonDodaj.setEnabled(false);
+                jComboBoxKlijent.setEnabled(false);
+                jButtonIzmeni.setEnabled(true);
                 break;
             default:
                 break;
         }
     }
-
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -136,6 +120,11 @@ public class FormaRezervacija extends javax.swing.JDialog {
         });
 
         jButtonDodaj.setText("Dodaj");
+        jButtonDodaj.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonDodajActionPerformed(evt);
+            }
+        });
 
         jButtonIzmeni.setText("Izmeni");
 
@@ -203,6 +192,43 @@ public class FormaRezervacija extends javax.swing.JDialog {
     private void jButtonOtkaziActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonOtkaziActionPerformed
         this.dispose();
     }//GEN-LAST:event_jButtonOtkaziActionPerformed
+
+    private void jButtonDodajActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDodajActionPerformed
+        try {
+            if(jTextFieldDatumDo.getText().isEmpty() || jTextFieldDatumOd.getText().isEmpty() || jTextFieldCena.getText().isEmpty()){
+                JOptionPane.showMessageDialog(this, "Sva polja moraju biti popunjena!", "Greska!", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
+            SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+            Date datumOd = sdf.parse(jTextFieldDatumOd.getText());
+            Date datumDo = sdf.parse(jTextFieldDatumDo.getText());
+            
+            if(datumOd.after(datumDo)){
+                JOptionPane.showMessageDialog(this, "Datum zavrsetka mora biti nakon datuma pocetka!", "Greska!", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
+            long razlikaUDanima = (datumDo.getTime() - datumOd.getTime()) / (1000 * 60 * 60 * 24);
+
+            if (razlikaUDanima > 60) {
+                JOptionPane.showMessageDialog(this, "Putovanje ne može trajati duže od 60 dana!", "Greška!", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
+            int cena = Integer.parseInt(jTextFieldCena.getText());
+            TuristickaAgencija ulogovana = Session.getInstance().getUlogovana();
+            Klijent klijent = (Klijent) jComboBoxKlijent.getSelectedItem();
+            
+            Rezervacija r = new Rezervacija(null, datumOd, datumDo, ulogovana, klijent, cena);
+            KlijentskiKontroler.getInstance().addRezervacija(r);
+            JOptionPane.showMessageDialog(this, "Uspesno dodata rezervacija.", "Obavestenje!", JOptionPane.INFORMATION_MESSAGE);
+            this.dispose();
+            
+        } catch (Exception ex) {
+            Logger.getLogger(FormaRezervacija.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButtonDodajActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonDodaj;

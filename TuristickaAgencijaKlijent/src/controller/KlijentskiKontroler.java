@@ -77,16 +77,42 @@ public class KlijentskiKontroler {
         return (ArrayList<Rezervacija>) sendRequest(Operacije.GET_ALL_REZERVACIJA, null);
     }
 
-    public ArrayList<Destinacija> getAllDestinacija() throws Exception {
-        return (ArrayList<Destinacija>) sendRequest(Operacije.GET_ALL_DESTINACIJA, null);
-    }
-
     public ArrayList<VrstaUsluge> getAllVrstaUsluge() throws Exception {
         return (ArrayList<VrstaUsluge>) sendRequest(Operacije.GET_ALL_VRSTA_USLUGE, null);
     }
-
+    
+    public void addTuristickaAgencija(TuristickaAgencija ta) throws Exception {
+        sendRequest(Operacije.ADD_TURISTICKA_AGENCIJA, ta);
+    }
+    
+    //Destinacija
+    public ArrayList<Destinacija> getAllDestinacija() throws Exception {
+        return (ArrayList<Destinacija>) sendRequest(Operacije.GET_ALL_DESTINACIJA, null);
+    }
+    
+    public void addDestinacija(Destinacija d) throws Exception {
+        sendRequest(Operacije.ADD_DESTINACIJA, d);
+    }
+    
+    public void deleteDestinacija(Destinacija d) throws Exception {
+        sendRequest(Operacije.DELETE_DESTINACIJA, d);
+    }
+    
+    public void updateDestinacija(Destinacija d) throws Exception {
+        sendRequest(Operacije.UPDATE_DESTINACIJA, d);
+    }
+    
+    //Nacionalnost
     public ArrayList<Nacionalnost> getAllNacionalnost() throws Exception {
         return (ArrayList<Nacionalnost>) sendRequest(Operacije.GET_ALL_NACIONALNOST, null);
+    }
+    
+    public void addNacionalnost(Nacionalnost n) throws Exception {
+        sendRequest(Operacije.ADD_NACIONALNOST, n);
+    }
+
+    public void updateNacionalnost(Nacionalnost n) throws Exception {
+        sendRequest(Operacije.UPDATE_NACIONALNOST, n);
     }
 
     private Object sendRequest(int operation, Object data) throws Exception {

@@ -182,7 +182,7 @@ public class FormaPretragaRezervacija extends javax.swing.JDialog {
         if(row>=0){
             Rezervacija r = ((TableModelRezervacije) jTableRezervacije.getModel()).getSelectedRezervacija(row);
             int result = JOptionPane.showConfirmDialog(this, "Da li ste sigurni da zelite da "
-                    + "obrisete ovu rezervaciju?" + r.toString(), "Konfirmacija", JOptionPane.YES_NO_OPTION);
+                    + "obrisete ovu rezervaciju? " + r.toString(), "Konfirmacija", JOptionPane.YES_NO_OPTION);
 
             if (result == JOptionPane.NO_OPTION) {
                 return;

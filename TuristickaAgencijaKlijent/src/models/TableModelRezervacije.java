@@ -18,7 +18,7 @@ import javax.swing.table.AbstractTableModel;
  */
 public class TableModelRezervacije extends AbstractTableModel implements Runnable{
     private ArrayList<Rezervacija> lista;
-    private String[] kolone = {"ID", "Datum", "Agencija", "Klijent", "Cena"};
+    private String[] kolone = {"ID", "Datum od", "Datum do", "Agencija", "Klijent", "Cena"};
     private String parametar = "";
     
     public TableModelRezervacije(){
@@ -47,7 +47,6 @@ public class TableModelRezervacije extends AbstractTableModel implements Runnabl
     @Override
     public Object getValueAt(int row, int column) {
     Object obj = lista.get(row);
-    System.out.println(obj);
     if (obj instanceof Rezervacija) {
         Rezervacija r = (Rezervacija) obj;
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
@@ -57,10 +56,12 @@ public class TableModelRezervacije extends AbstractTableModel implements Runnabl
             case 1:
                 return sdf.format(r.getDatum());
             case 2:
-                return r.getAgencija().toString();
+                return sdf.format(r.getDatumDo());
             case 3:
-                return r.getKlijent().toString();
+                return r.getAgencija().toString();
             case 4:
+                return r.getKlijent().toString();
+            case 5:
                 return r.getCena() + " €";
             default:
                 return null;
@@ -94,10 +95,14 @@ public class TableModelRezervacije extends AbstractTableModel implements Runnabl
     public void refreshTable() {
         try {
             lista = KlijentskiKontroler.getInstance().getAllRezervacija();
-            if(parametar.equals("")){
+            if(!parametar.equals("")){
                 ArrayList<Rezervacija> novaLista = new ArrayList<>();
+                String ime = "";
+                String prezime = "";
                 for (Rezervacija rezervacija : lista) {
-                    if(rezervacija.getKlijent().getIme().toLowerCase().contains(parametar.toLowerCase())||rezervacija.getKlijent().getPrezime().toLowerCase().contains(parametar.toLowerCase())){
+                    ime=rezervacija.getKlijent().getIme().toLowerCase();
+                    prezime=rezervacija.getKlijent().getPrezime().toLowerCase();
+                    if(ime.contains(parametar.toLowerCase()) || prezime.contains(parametar.toLowerCase())){
                         novaLista.add(rezervacija);
                     }
                 }

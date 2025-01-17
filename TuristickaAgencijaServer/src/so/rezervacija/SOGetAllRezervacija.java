@@ -34,8 +34,6 @@ public class SOGetAllRezervacija extends AbstractSO{
     for (AbstractDomainObject obj : rezervacije) {
         if (obj instanceof Rezervacija) {
             lista.add((Rezervacija) obj);
-        } else {
-            System.err.println("Nepodržan tip objekta: " + obj.getClass().getName());
         }
     }
 }

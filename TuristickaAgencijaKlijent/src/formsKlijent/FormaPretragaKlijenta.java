@@ -6,7 +6,9 @@ package formsKlijent;
 
 import controller.KlijentskiKontroler;
 import domain.Klijent;
+import domain.Nacionalnost;
 import forms.MainForma;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -30,6 +32,7 @@ public class FormaPretragaKlijenta extends javax.swing.JDialog {
         th.start();
         jTableKlijenti.setModel(model);
         setTitle("Pretraga klijenta");
+        this.popuniNacionalnost();
     }
 
     /**
@@ -49,10 +52,14 @@ public class FormaPretragaKlijenta extends javax.swing.JDialog {
         jButtonDetalji = new javax.swing.JButton();
         jButtonIzmeni = new javax.swing.JButton();
         jButtonObrisi = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jComboBoxNacionalnost = new javax.swing.JComboBox();
+        jLabel3 = new javax.swing.JLabel();
+        jTextFieldEmail = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jLabel1.setText("Pretraga (ime i prezime)");
+        jLabel1.setText("Pretraga (ime ili prezime)");
 
         jTextFieldPretraga.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -101,6 +108,23 @@ public class FormaPretragaKlijenta extends javax.swing.JDialog {
             }
         });
 
+        jLabel2.setText("Nacionalnost");
+
+        jComboBoxNacionalnost.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxNacionalnost.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxNacionalnostActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setText("Email");
+
+        jTextFieldEmail.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextFieldEmailKeyReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -108,14 +132,7 @@ public class FormaPretragaKlijenta extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jScrollPane1)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(18, 18, 18)
-                                .addComponent(jTextFieldPretraga, javax.swing.GroupLayout.PREFERRED_SIZE, 487, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButtonOtkazi)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -123,8 +140,22 @@ public class FormaPretragaKlijenta extends javax.swing.JDialog {
                         .addGap(18, 18, 18)
                         .addComponent(jButtonIzmeni)
                         .addGap(18, 18, 18)
-                        .addComponent(jButtonDetalji)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jButtonDetalji))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel1)
+                            .addGap(18, 18, 18)
+                            .addComponent(jTextFieldPretraga, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(jLabel2)
+                            .addGap(18, 18, 18)
+                            .addComponent(jComboBoxNacionalnost, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(0, 0, Short.MAX_VALUE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel3)
+                            .addGap(18, 18, 18)
+                            .addComponent(jTextFieldEmail))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -132,8 +163,14 @@ public class FormaPretragaKlijenta extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextFieldPretraga, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2)
+                    .addComponent(jComboBoxNacionalnost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(jTextFieldEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -141,7 +178,7 @@ public class FormaPretragaKlijenta extends javax.swing.JDialog {
                     .addComponent(jButtonDetalji)
                     .addComponent(jButtonIzmeni)
                     .addComponent(jButtonObrisi))
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -186,7 +223,7 @@ public class FormaPretragaKlijenta extends javax.swing.JDialog {
         if(row>=0){
             Klijent k = ((TableModelKlijenti) jTableKlijenti.getModel()).getSelectedKlijent(row);
             int result = JOptionPane.showConfirmDialog(this, "Da li ste sigurni da zelite da "
-                    + "obrisete ovog klijenta?" + k.toString(), "Konfirmacija", JOptionPane.YES_NO_OPTION);
+                    + "obrisete ovog klijenta? " + k.toString(), "Konfirmacija", JOptionPane.YES_NO_OPTION);
 
             if (result == JOptionPane.NO_OPTION) {
                 return;
@@ -206,6 +243,20 @@ public class FormaPretragaKlijenta extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_jButtonObrisiActionPerformed
 
+    private void jComboBoxNacionalnostActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxNacionalnostActionPerformed
+        if(jComboBoxNacionalnost.getSelectedItem()!=null){
+            Nacionalnost n = (Nacionalnost) jComboBoxNacionalnost.getSelectedItem();
+            String nacionalnost = n.getNaziv();
+        
+            ((TableModelKlijenti) jTableKlijenti.getModel()).setParametar2(nacionalnost);
+        }
+    }//GEN-LAST:event_jComboBoxNacionalnostActionPerformed
+
+    private void jTextFieldEmailKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldEmailKeyReleased
+        String param = jTextFieldEmail.getText();
+        ((TableModelKlijenti) jTableKlijenti.getModel()).setParametar3(param);
+    }//GEN-LAST:event_jTextFieldEmailKeyReleased
+
     /**
      * @param args the command line arguments
      */
@@ -215,9 +266,13 @@ public class FormaPretragaKlijenta extends javax.swing.JDialog {
     private javax.swing.JButton jButtonIzmeni;
     private javax.swing.JButton jButtonObrisi;
     private javax.swing.JButton jButtonOtkazi;
+    private javax.swing.JComboBox jComboBoxNacionalnost;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableKlijenti;
+    private javax.swing.JTextField jTextFieldEmail;
     private javax.swing.JTextField jTextFieldPretraga;
     // End of variables declaration//GEN-END:variables
     void refreshTable() {
@@ -228,5 +283,20 @@ public class FormaPretragaKlijenta extends javax.swing.JDialog {
     void popuniKlijente() {
         MainForma mf = (MainForma) getParent();
         mf.popuniKlijente();
+    }
+    
+    private void popuniNacionalnost() {
+        try {
+            ArrayList<Nacionalnost> nacionalnosti = KlijentskiKontroler.getInstance().getAllNacionalnost();
+
+            jComboBoxNacionalnost.removeAllItems();
+            
+            for (Nacionalnost nacionalnost : nacionalnosti) {
+                jComboBoxNacionalnost.addItem(nacionalnost);
+            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(MainForma.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

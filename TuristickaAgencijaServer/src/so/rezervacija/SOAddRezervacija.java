@@ -4,6 +4,7 @@
  */
 package so.rezervacija;
 
+import database.DBBroker;
 import domain.AbstractDomainObject;
 import domain.Rezervacija;
 import so.AbstractSO;
@@ -25,7 +26,7 @@ public class SOAddRezervacija extends AbstractSO{
 
     @Override
     protected void execute(AbstractDomainObject ado) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        DBBroker.getInstance().insert(ado);
     }
     
 }
