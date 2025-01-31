@@ -9,6 +9,8 @@ import domain.Destinacija;
 import domain.Klijent;
 import domain.Nacionalnost;
 import domain.Rezervacija;
+import domain.StavkaRezervacije;
+import domain.TAVU;
 import domain.TuristickaAgencija;
 import domain.VrstaUsluge;
 import java.io.ObjectInputStream;
@@ -129,6 +131,24 @@ public class KlijentskaNit extends Thread{
                     break;
                 case Operacije.DELETE_VRSTA_USLUGE:
                     ServerskiKontroler.getInstance().deleteVrstaUsluge((VrstaUsluge) request.getData());
+                    break;
+                case Operacije.GET_ALL_STAVKE_REZERVACIJE:
+                    response.setData(ServerskiKontroler.getInstance().getAllStavkaRezervacije());
+                    break;
+                case Operacije.ADD_STAVKA_REZERVACIJE:
+                    ServerskiKontroler.getInstance().addStavkaRezervacije((StavkaRezervacije) request.getData());
+                    break;
+                case Operacije.DELETE_STAVKA_REZERVACIJE:
+                    ServerskiKontroler.getInstance().deleteStavkaRezervacije((StavkaRezervacije) request.getData());
+                    break;
+                case Operacije.GET_ALL_TAVU:
+                    response.setData(ServerskiKontroler.getInstance().getAllTAVU());
+                    break;
+                case Operacije.ADD_TAVU:
+                    ServerskiKontroler.getInstance().addTAVU((TAVU) request.getData());
+                    break;
+                case Operacije.DELETE_TAVU:
+                    ServerskiKontroler.getInstance().deleteTAVU((TAVU) request.getData());
                     break;
                 default:
                     return null;

@@ -7,7 +7,6 @@ package formsRezervacija;
 import controller.KlijentskiKontroler;
 import domain.Klijent;
 import domain.Rezervacija;
-import domain.TuristickaAgencija;
 import forms.MainForma;
 import java.awt.Window;
 import java.text.SimpleDateFormat;
@@ -16,7 +15,7 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import session.Session;
+
 
 /**
  *
@@ -33,22 +32,8 @@ public class FormaRezervacija extends javax.swing.JDialog {
         setLocationRelativeTo(null);
         pomocna=r;
         switch (signal) {
-            case 0:
-                setTitle("Dodavanje rezervacije");
-                jTextFieldDatumOd.setText("");
-                jTextFieldDatumDo.setText("");
-                jTextFieldCena.setText("");
-                this.popuniKlijente();
-                jTextFieldDatumOd.setEditable(true);
-                jTextFieldDatumDo.setEditable(true);
-                jTextFieldCena.setEditable(true);
-                jComboBoxKlijent.setEnabled(true);
-                jButtonIzmeni.setEnabled(false);
-                jButtonDodaj.setEnabled(true);
-                break;
             case 1:                
                 setTitle("Detalji rezervacije");
-                jButtonDodaj.setEnabled(false);
                 jButtonIzmeni.setEnabled(false);
                 SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
                 jTextFieldDatumOd.setText(sdf.format(pomocna.getDatum()));
@@ -62,7 +47,6 @@ public class FormaRezervacija extends javax.swing.JDialog {
                 break;
             case 2:
                 setTitle("Izmena rezervacije");
-                jButtonDodaj.setEnabled(false);
                 SimpleDateFormat sdf1 = new SimpleDateFormat("dd.MM.yyyy");
                 jTextFieldDatumOd.setText(sdf1.format(pomocna.getDatum()));
                 jTextFieldDatumDo.setText(sdf1.format(pomocna.getDatum()));
@@ -70,7 +54,7 @@ public class FormaRezervacija extends javax.swing.JDialog {
                 this.popuniKlijente();
                 jTextFieldDatumOd.setEditable(true);
                 jTextFieldDatumDo.setEditable(true);
-                jTextFieldCena.setEditable(true);
+                jTextFieldCena.setEditable(false);
                 jComboBoxKlijent.setEnabled(false);
                 jButtonIzmeni.setEnabled(true);
                 break;
@@ -91,7 +75,6 @@ public class FormaRezervacija extends javax.swing.JDialog {
         jLabel5 = new javax.swing.JLabel();
         jTextFieldDatumDo = new javax.swing.JTextField();
         jButtonOtkazi = new javax.swing.JButton();
-        jButtonDodaj = new javax.swing.JButton();
         jButtonIzmeni = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -119,14 +102,12 @@ public class FormaRezervacija extends javax.swing.JDialog {
             }
         });
 
-        jButtonDodaj.setText("Dodaj");
-        jButtonDodaj.addActionListener(new java.awt.event.ActionListener() {
+        jButtonIzmeni.setText("Izmeni");
+        jButtonIzmeni.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonDodajActionPerformed(evt);
+                jButtonIzmeniActionPerformed(evt);
             }
         });
-
-        jButtonIzmeni.setText("Izmeni");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -153,10 +134,8 @@ public class FormaRezervacija extends javax.swing.JDialog {
                             .addComponent(jComboBoxKlijent, 0, 264, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButtonOtkazi)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 142, Short.MAX_VALUE)
-                        .addComponent(jButtonIzmeni)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButtonDodaj)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 236, Short.MAX_VALUE)
+                        .addComponent(jButtonIzmeni)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -181,7 +160,6 @@ public class FormaRezervacija extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonOtkazi)
-                    .addComponent(jButtonDodaj)
                     .addComponent(jButtonIzmeni))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -193,9 +171,10 @@ public class FormaRezervacija extends javax.swing.JDialog {
         this.dispose();
     }//GEN-LAST:event_jButtonOtkaziActionPerformed
 
-    private void jButtonDodajActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDodajActionPerformed
+    private void jButtonIzmeniActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonIzmeniActionPerformed
         try {
-            if(jTextFieldDatumDo.getText().isEmpty() || jTextFieldDatumOd.getText().isEmpty() || jTextFieldCena.getText().isEmpty()){
+            
+            if(jTextFieldDatumDo.getText().isEmpty() || jTextFieldDatumOd.getText().isEmpty()){
                 JOptionPane.showMessageDialog(this, "Sva polja moraju biti popunjena!", "Greska!", JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -216,22 +195,18 @@ public class FormaRezervacija extends javax.swing.JDialog {
                 return;
             }
             
-            int cena = Integer.parseInt(jTextFieldCena.getText());
-            TuristickaAgencija ulogovana = Session.getInstance().getUlogovana();
-            Klijent klijent = (Klijent) jComboBoxKlijent.getSelectedItem();
-            
-            Rezervacija r = new Rezervacija(null, datumOd, datumDo, ulogovana, klijent, cena);
-            KlijentskiKontroler.getInstance().addRezervacija(r);
-            JOptionPane.showMessageDialog(this, "Uspesno dodata rezervacija.", "Obavestenje!", JOptionPane.INFORMATION_MESSAGE);
+            pomocna.setDatum(datumOd);
+            pomocna.setDatumDo(datumDo);
+            KlijentskiKontroler.getInstance().updateRezervacija(pomocna);
+            JOptionPane.showMessageDialog(this, "Uspesno izmenjena rezervacija.", "Obavestenje!", JOptionPane.INFORMATION_MESSAGE);
             this.dispose();
-            
-        } catch (Exception ex) {
-            Logger.getLogger(FormaRezervacija.class.getName()).log(Level.SEVERE, null, ex);
+        }catch (Exception ex) {
+            Logger.getLogger(MainForma.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Greska!", JOptionPane.ERROR_MESSAGE);
         }
-    }//GEN-LAST:event_jButtonDodajActionPerformed
+    }//GEN-LAST:event_jButtonIzmeniActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButtonDodaj;
     private javax.swing.JButton jButtonIzmeni;
     private javax.swing.JButton jButtonOtkazi;
     private javax.swing.JComboBox jComboBoxKlijent;

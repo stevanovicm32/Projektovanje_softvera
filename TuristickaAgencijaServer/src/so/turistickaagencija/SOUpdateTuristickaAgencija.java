@@ -25,21 +25,6 @@ public class SOUpdateTuristickaAgencija extends AbstractSO{
         TuristickaAgencija novaAgencija = (TuristickaAgencija) ado;
 
         ArrayList<TuristickaAgencija> agencije = (ArrayList<TuristickaAgencija>) (ArrayList<?>) DBBroker.getInstance().select(ado);
-        
-        for (TuristickaAgencija turistickaAgencija : agencije) {
-            if(turistickaAgencija.getNaziv().equalsIgnoreCase(novaAgencija.getNaziv()))
-            {
-                throw new Exception("Vec postoji turisticka agencija s tim nazivom!");
-            }
-            if(turistickaAgencija.getAdresa().equalsIgnoreCase(novaAgencija.getAdresa()))
-            {
-                throw new Exception("Vec postoji turisticka agencija s tom adresom!");
-            }
-            if(turistickaAgencija.getUsername().equalsIgnoreCase(novaAgencija.getUsername()))
-            {
-                throw new Exception("Korisnicko ime vec postoji!");
-            }
-        }
     }
 
     @Override

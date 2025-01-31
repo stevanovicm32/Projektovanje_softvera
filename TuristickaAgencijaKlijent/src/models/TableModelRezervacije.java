@@ -115,4 +115,26 @@ public class TableModelRezervacije extends AbstractTableModel implements Runnabl
             Logger.getLogger(TableModelRezervacije.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    public void setParametar1(String parametar){
+        this.parametar = parametar;
+        refreshTable1();
+    }
+
+    public void refreshTable1() {
+        try {
+            lista = KlijentskiKontroler.getInstance().getAllRezervacija();
+            ArrayList<Rezervacija> novaLista = new ArrayList<>();
+            for (Rezervacija rezervacija : lista) {
+                if(rezervacija.getAgencija().getNaziv().equals(parametar)){
+                    novaLista.add(rezervacija);
+                }
+            }
+            lista = novaLista;
+            fireTableDataChanged();
+            
+        } catch (Exception ex) {
+            Logger.getLogger(TableModelRezervacije.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

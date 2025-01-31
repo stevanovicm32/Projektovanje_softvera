@@ -6,17 +6,22 @@ package formsRezervacija;
 
 import controller.KlijentskiKontroler;
 import domain.Rezervacija;
+import domain.StavkaRezervacije;
+import domain.TuristickaAgencija;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import javax.swing.JOptionPane;
 import models.TableModelRezervacije;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import models.TableModelStavkeRezervacije;
 
 /**
  *
  * @author Lenovo
  */
 public class FormaPretragaRezervacija extends javax.swing.JDialog {
-
     /**
      * Creates new form FormaPretragaRezervacija
      */
@@ -28,7 +33,9 @@ public class FormaPretragaRezervacija extends javax.swing.JDialog {
         Thread th = new Thread(model);
         th.start();
         jTableRezervacije.setModel(model);
+        this.popuniTuristickaAgencija();
         setTitle("Pretraga rezervacija");
+        model.setParametar("");
     }
 
     /**
@@ -48,6 +55,9 @@ public class FormaPretragaRezervacija extends javax.swing.JDialog {
         jButtonIzmeni = new javax.swing.JButton();
         jButtonObrisi = new javax.swing.JButton();
         jButtonDetalji = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jComboBoxTuristickeAgencije = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -100,6 +110,22 @@ public class FormaPretragaRezervacija extends javax.swing.JDialog {
             }
         });
 
+        jButton1.setText("Dodaj stavke");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Turisticka agencija");
+
+        jComboBoxTuristickeAgencije.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxTuristickeAgencije.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxTuristickeAgencijeActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -107,19 +133,26 @@ public class FormaPretragaRezervacija extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 588, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(18, 18, 18)
-                        .addComponent(jTextFieldPretraga))
+                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButtonOtkazi)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1)
+                        .addGap(74, 74, 74)
                         .addComponent(jButtonObrisi)
                         .addGap(26, 26, 26)
                         .addComponent(jButtonIzmeni)
                         .addGap(18, 18, 18)
-                        .addComponent(jButtonDetalji)))
+                        .addComponent(jButtonDetalji))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(18, 18, 18)
+                        .addComponent(jTextFieldPretraga, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel2)
+                        .addGap(18, 18, 18)
+                        .addComponent(jComboBoxTuristickeAgencije, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -128,15 +161,18 @@ public class FormaPretragaRezervacija extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextFieldPretraga, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addGap(18, 18, 18)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2)
+                    .addComponent(jComboBoxTuristickeAgencije, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonOtkazi)
                     .addComponent(jButtonIzmeni)
                     .addComponent(jButtonObrisi)
-                    .addComponent(jButtonDetalji))
+                    .addComponent(jButtonDetalji)
+                    .addComponent(jButton1))
                 .addContainerGap())
         );
 
@@ -181,6 +217,15 @@ public class FormaPretragaRezervacija extends javax.swing.JDialog {
         
         if(row>=0){
             Rezervacija r = ((TableModelRezervacije) jTableRezervacije.getModel()).getSelectedRezervacija(row);
+            TableModelStavkeRezervacije modelSR = new TableModelStavkeRezervacije(r);
+            ArrayList<StavkaRezervacije> lista = modelSR.getLista();
+            for (StavkaRezervacije stavkaRezervacije : lista) {
+                try {
+                    KlijentskiKontroler.getInstance().deleteStavkaRezervacije(stavkaRezervacije);
+                } catch (Exception ex) {
+                    Logger.getLogger(FormaPretragaRezervacija.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
             int result = JOptionPane.showConfirmDialog(this, "Da li ste sigurni da zelite da "
                     + "obrisete ovu rezervaciju? " + r.toString(), "Konfirmacija", JOptionPane.YES_NO_OPTION);
 
@@ -190,6 +235,7 @@ public class FormaPretragaRezervacija extends javax.swing.JDialog {
 
             if (result == JOptionPane.YES_OPTION) {
                 try {
+                    
                     KlijentskiKontroler.getInstance().deleteRezervacija(r);
                     this.refreshTable();
                     JOptionPane.showMessageDialog(this, "Uspesno obrisana rezervacija.");
@@ -202,12 +248,35 @@ public class FormaPretragaRezervacija extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_jButtonObrisiActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        int row = jTableRezervacije.getSelectedRow();
+
+        if (row >= 0) {
+            Rezervacija r = ((TableModelRezervacije) jTableRezervacije.getModel()).getSelectedRezervacija(row);
+            new FormaDodavanjeStavkeRezervacija(this, true, r).setVisible(true);
+        }else{
+            JOptionPane.showMessageDialog(this, "Morate odabrati rezervaciju!", "Obavestenje!", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jComboBoxTuristickeAgencijeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxTuristickeAgencijeActionPerformed
+        if(jComboBoxTuristickeAgencije.getSelectedItem()!=null){
+            TuristickaAgencija ta = (TuristickaAgencija) jComboBoxTuristickeAgencije.getSelectedItem();
+            String naziv = ta.getNaziv();
+        
+            ((TableModelRezervacije) jTableRezervacije.getModel()).setParametar1(naziv);
+        }
+    }//GEN-LAST:event_jComboBoxTuristickeAgencijeActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButtonDetalji;
     private javax.swing.JButton jButtonIzmeni;
     private javax.swing.JButton jButtonObrisi;
     private javax.swing.JButton jButtonOtkazi;
+    private javax.swing.JComboBox jComboBoxTuristickeAgencije;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableRezervacije;
     private javax.swing.JTextField jTextFieldPretraga;
@@ -215,5 +284,22 @@ public class FormaPretragaRezervacija extends javax.swing.JDialog {
     void refreshTable(){
         TableModelRezervacije tm = (TableModelRezervacije) jTableRezervacije.getModel();
         tm.refreshTable();
+    }
+    
+    private void popuniTuristickaAgencija() {
+        try {
+            ArrayList<TuristickaAgencija> turistickeAgencije = KlijentskiKontroler.getInstance().getAllTuristickaAgencija();
+            Set<String> naziviAgencija = new HashSet<>();
+            jComboBoxTuristickeAgencije.removeAllItems();
+
+            for (TuristickaAgencija ta : turistickeAgencije) {
+                if (!naziviAgencija.contains(ta.getNaziv())) { 
+                    naziviAgencija.add(ta.getNaziv()); 
+                    jComboBoxTuristickeAgencije.addItem(ta); 
+                }
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(FormaPretragaRezervacija.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

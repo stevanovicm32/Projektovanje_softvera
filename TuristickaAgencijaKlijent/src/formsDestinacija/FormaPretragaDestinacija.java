@@ -250,7 +250,7 @@ public class FormaPretragaDestinacija extends javax.swing.JDialog {
             Destinacija d = ((TableModelDestinacija) jTableDestinacije.getModel()).getSelectedDestinacija(row);
             new FormaDestinacija(this, true, d, signal).setVisible(true);
         }else{
-            JOptionPane.showMessageDialog(this, "Morate odabrati rezervaciju!", "Obavestenje!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Morate odabrati destinaciju!", "Obavestenje!", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButtonIzmeniActionPerformed
 
@@ -262,7 +262,7 @@ public class FormaPretragaDestinacija extends javax.swing.JDialog {
             Destinacija d = ((TableModelDestinacija) jTableDestinacije.getModel()).getSelectedDestinacija(row);
             new FormaDestinacija(this, true, d, signal).setVisible(true);
         }else{
-            JOptionPane.showMessageDialog(this, "Morate odabrati rezervaciju!", "Obavestenje!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Morate odabrati destinaciju!", "Obavestenje!", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButtonDetaljiActionPerformed
 

@@ -6,8 +6,6 @@ package formsTuristickaAgencija;
 
 import controller.KlijentskiKontroler;
 import domain.TuristickaAgencija;
-import domain.VrstaUsluge;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -26,7 +24,6 @@ public class FormaTuristickaAgencijaRegistracija extends javax.swing.JDialog {
         initComponents();
         setLocationRelativeTo(null);
         setTitle("Registracija agencije");
-        this.popuniVrsteUsluge();
     }
 
     /**
@@ -50,8 +47,6 @@ public class FormaTuristickaAgencijaRegistracija extends javax.swing.JDialog {
         jPasswordFieldSifra = new javax.swing.JPasswordField();
         jButtonRegistracija = new javax.swing.JButton();
         jButtonOtkazi = new javax.swing.JButton();
-        jLabel6 = new javax.swing.JLabel();
-        jComboBoxVrstaUsluge = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -79,10 +74,6 @@ public class FormaTuristickaAgencijaRegistracija extends javax.swing.JDialog {
             }
         });
 
-        jLabel6.setText("Vrsta usluge");
-
-        jComboBoxVrstaUsluge.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -100,8 +91,7 @@ public class FormaTuristickaAgencijaRegistracija extends javax.swing.JDialog {
                             .addComponent(jLabel2)
                             .addComponent(jLabel3)
                             .addComponent(jLabel4)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel6))
+                            .addComponent(jLabel5))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jPasswordFieldSifra)
@@ -111,8 +101,7 @@ public class FormaTuristickaAgencijaRegistracija extends javax.swing.JDialog {
                                     .addComponent(jTextFieldUsername)
                                     .addComponent(jTextFieldAdresa)
                                     .addComponent(jTextFieldNaziv))
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jComboBoxVrstaUsluge, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -138,10 +127,6 @@ public class FormaTuristickaAgencijaRegistracija extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(jPasswordFieldSifraOpet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(jComboBoxVrstaUsluge, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonRegistracija, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -171,7 +156,20 @@ public class FormaTuristickaAgencijaRegistracija extends javax.swing.JDialog {
             String adresa = jTextFieldAdresa.getText();
             String naziv = jTextFieldNaziv.getText();
             String username = jTextFieldUsername.getText();
-            VrstaUsluge vrstausluge = (VrstaUsluge) jComboBoxVrstaUsluge.getSelectedItem();
+            
+            if(naziv.length()>50){
+                JOptionPane.showMessageDialog(this, "Naziv mora imati manje od 50 slova!", "Greska!", JOptionPane.ERROR_MESSAGE);
+                return;
+            }else if(adresa.length()>100){
+                JOptionPane.showMessageDialog(this, "Adresa mora imati manje od 100 slova!", "Greska!", JOptionPane.ERROR_MESSAGE);
+                return;
+            }else if(username.length()>30){
+                JOptionPane.showMessageDialog(this, "Username mora imati manje od 30 slova!", "Greska!", JOptionPane.ERROR_MESSAGE);
+                return;
+            }else if(sifra.length()>30){
+                JOptionPane.showMessageDialog(this, "Sifra mora imati manje od 30 slova!", "Greska!", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
             
             TuristickaAgencija ta = new TuristickaAgencija(null, naziv, adresa, username, sifra);
             KlijentskiKontroler.getInstance().addTuristickaAgencija(ta);
@@ -188,30 +186,15 @@ public class FormaTuristickaAgencijaRegistracija extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonOtkazi;
     private javax.swing.JButton jButtonRegistracija;
-    private javax.swing.JComboBox jComboBoxVrstaUsluge;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JPasswordField jPasswordFieldSifra;
     private javax.swing.JPasswordField jPasswordFieldSifraOpet;
     private javax.swing.JTextField jTextFieldAdresa;
     private javax.swing.JTextField jTextFieldNaziv;
     private javax.swing.JTextField jTextFieldUsername;
     // End of variables declaration//GEN-END:variables
-    private void popuniVrsteUsluge() {
-        try {
-            ArrayList<VrstaUsluge> vrsteusluge = KlijentskiKontroler.getInstance().getAllVrstaUsluge();
-            
-            jComboBoxVrstaUsluge.removeAllItems();
-            
-            for (VrstaUsluge vrstaUsluge : vrsteusluge) {
-                jComboBoxVrstaUsluge.addItem(vrstaUsluge);
-            }
-        } catch (Exception ex) {
-            Logger.getLogger(FormaTuristickaAgencijaRegistracija.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
 }

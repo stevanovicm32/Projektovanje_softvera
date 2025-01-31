@@ -25,6 +25,33 @@ public class FormaNacionalnost extends javax.swing.JDialog {
         initComponents();
         setLocationRelativeTo(null);
         pomocna=n;
+        switch (signal){
+            case 0:
+                setTitle("Dodavanje nacionalnosti");
+                jTextFieldNaziv.setEditable(true);
+                jTextFieldPrivilegije.setEditable(true);
+                jButtonDodaj.setEnabled(true);
+                jButtonIzmeni.setEnabled(false);
+                break;
+            case 1:
+                setTitle("Detalji nacionalnosti");
+                jTextFieldNaziv.setEditable(false);
+                jTextFieldPrivilegije.setEditable(false);
+                jTextFieldNaziv.setText(pomocna.getNaziv());
+                jTextFieldPrivilegije.setText(pomocna.getPrivilegije());
+                jButtonDodaj.setEnabled(false);
+                jButtonIzmeni.setEnabled(false);
+                break;
+            case 2:
+                setTitle("Izmena nacionalnosti");
+                jTextFieldNaziv.setEditable(false);
+                jTextFieldPrivilegije.setEditable(true);
+                jTextFieldNaziv.setText(pomocna.getNaziv());
+                jTextFieldPrivilegije.setText(pomocna.getPrivilegije());
+                jButtonDodaj.setEnabled(false);
+                jButtonIzmeni.setEnabled(true);
+                break;
+        }
     }
 
     /**
@@ -154,6 +181,14 @@ public class FormaNacionalnost extends javax.swing.JDialog {
 
             String naziv = jTextFieldNaziv.getText();
             String privilegije = jTextFieldPrivilegije.getText();
+            
+            if(naziv.length()>50){
+                JOptionPane.showMessageDialog(this, "Naziv mora imati manje od 50 slova!", "Greska!", JOptionPane.ERROR_MESSAGE);
+                return;
+            }else if(privilegije.length()>100){
+                JOptionPane.showMessageDialog(this, "Privilegije moraju imati manje od 100 slova!", "Greska!", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
             Nacionalnost n = new Nacionalnost(pomocna.getIdNacionalnost(), privilegije, naziv);
             KlijentskiKontroler.getInstance().updateNacionalnost(n);
@@ -162,6 +197,7 @@ public class FormaNacionalnost extends javax.swing.JDialog {
             this.dispose();
         } catch (Exception ex) {
             Logger.getLogger(FormaNacionalnost.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Greska!", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButtonIzmeniActionPerformed
 

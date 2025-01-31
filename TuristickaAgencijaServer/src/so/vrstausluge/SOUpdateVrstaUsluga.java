@@ -25,12 +25,6 @@ public class SOUpdateVrstaUsluga extends AbstractSO{
         VrstaUsluge novaVrsta = (VrstaUsluge) ado;
 
         ArrayList<VrstaUsluge> usluge = (ArrayList<VrstaUsluge>) (ArrayList<?>) DBBroker.getInstance().select(ado);
-        
-        for (VrstaUsluge vrstaUsluge : usluge) {
-            if(vrstaUsluge.getNazivUsluge().equalsIgnoreCase(novaVrsta.getNazivUsluge())){
-                throw new Exception("Vec postoji vrsta usluge s tim nazivom!");
-            }
-        }
     }
 
     @Override

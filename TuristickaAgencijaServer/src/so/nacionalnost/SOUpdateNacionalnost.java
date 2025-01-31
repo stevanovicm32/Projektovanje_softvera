@@ -25,12 +25,6 @@ public class SOUpdateNacionalnost extends AbstractSO{
         Nacionalnost novaNacionalnost = (Nacionalnost) ado;
 
         ArrayList<Nacionalnost> nacionalnosti = (ArrayList<Nacionalnost>) (ArrayList<?>) DBBroker.getInstance().select(ado);
-        
-        for (Nacionalnost nacionalnost : nacionalnosti) {
-            if(nacionalnost.getNaziv().equalsIgnoreCase(novaNacionalnost.getNaziv())){
-                throw new Exception("Vec postoji nacionalnost s tim nazivom!");
-            }
-        }
     }
 
     @Override

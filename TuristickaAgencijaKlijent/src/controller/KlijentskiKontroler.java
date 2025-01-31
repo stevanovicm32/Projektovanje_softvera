@@ -8,6 +8,8 @@ import domain.Destinacija;
 import domain.Klijent;
 import domain.Nacionalnost;
 import domain.Rezervacija;
+import domain.StavkaRezervacije;
+import domain.TAVU;
 import domain.TuristickaAgencija;
 import domain.VrstaUsluge;
 import java.io.ObjectInputStream;
@@ -37,52 +39,38 @@ public class KlijentskiKontroler {
         return instance;
     }
 
-    public TuristickaAgencija login(TuristickaAgencija agencija) throws Exception {
-        return (TuristickaAgencija) sendRequest(Operacije.LOGIN, agencija);
+    //Klijent
+    public ArrayList<Klijent> getAllKlijent() throws Exception {
+        return (ArrayList<Klijent>) sendRequest(Operacije.GET_ALL_KLIJENT, null);
     }
     
-    public void logout(TuristickaAgencija ulogovana) throws Exception {
-        sendRequest(Operacije.LOGOUT, ulogovana);
-    }
-
     public void addKlijent(Klijent klijent) throws Exception {
         sendRequest(Operacije.ADD_KLIJENT, klijent);
-    }
-
-    public void addRezervacija(Rezervacija rezervacija) throws Exception {
-        sendRequest(Operacije.ADD_REZERVACIJA, rezervacija);
-    }
-
-    public void deleteKlijent(Klijent klijent) throws Exception {
-        sendRequest(Operacije.DELETE_KLIJENT, klijent);
-    }
-
-    public void deleteRezervacija(Rezervacija rezervacija) throws Exception {
-        sendRequest(Operacije.DELETE_REZERVACIJA, rezervacija);
     }
 
     public void updateKlijent(Klijent klijent) throws Exception {
         sendRequest(Operacije.UPDATE_KLIJENT, klijent);
     }
-
-    public void updateRezervacija(Rezervacija rezervacija) throws Exception {
-        sendRequest(Operacije.UPDATE_REZERVACIJA, rezervacija);
+    
+    public void deleteKlijent(Klijent klijent) throws Exception {
+        sendRequest(Operacije.DELETE_KLIJENT, klijent);
     }
-
-    public ArrayList<Klijent> getAllKlijent() throws Exception {
-        return (ArrayList<Klijent>) sendRequest(Operacije.GET_ALL_KLIJENT, null);
-    }
-
+    
+    //Rezervacija
     public ArrayList<Rezervacija> getAllRezervacija() throws Exception {
         return (ArrayList<Rezervacija>) sendRequest(Operacije.GET_ALL_REZERVACIJA, null);
     }
-
-    public ArrayList<VrstaUsluge> getAllVrstaUsluge() throws Exception {
-        return (ArrayList<VrstaUsluge>) sendRequest(Operacije.GET_ALL_VRSTA_USLUGE, null);
+    
+    public void addRezervacija(Rezervacija rezervacija) throws Exception {
+        sendRequest(Operacije.ADD_REZERVACIJA, rezervacija);
     }
     
-    public void addTuristickaAgencija(TuristickaAgencija ta) throws Exception {
-        sendRequest(Operacije.ADD_TURISTICKA_AGENCIJA, ta);
+    public void updateRezervacija(Rezervacija rezervacija) throws Exception {
+        sendRequest(Operacije.UPDATE_REZERVACIJA, rezervacija);
+    }
+    
+    public void deleteRezervacija(Rezervacija rezervacija) throws Exception {
+        sendRequest(Operacije.DELETE_REZERVACIJA, rezervacija);
     }
     
     //Destinacija
@@ -113,6 +101,82 @@ public class KlijentskiKontroler {
 
     public void updateNacionalnost(Nacionalnost n) throws Exception {
         sendRequest(Operacije.UPDATE_NACIONALNOST, n);
+    }
+    
+    public void deleteNacionalnost(Nacionalnost n) throws Exception {
+        sendRequest(Operacije.DELETE_NACIONALNOST, n);
+    }
+    
+    //VrstaUsluge
+    public ArrayList<VrstaUsluge> getAllVrstaUsluge() throws Exception {
+        return (ArrayList<VrstaUsluge>) sendRequest(Operacije.GET_ALL_VRSTA_USLUGE, null);
+    }
+    
+    public ArrayList<VrstaUsluge> getAllVrstaUsluge(TuristickaAgencija ta) throws Exception {
+        return (ArrayList<VrstaUsluge>) sendRequest(Operacije.GET_ALL_VRSTA_USLUGE, ta);
+    }
+    
+    public void addVrstaUsluge(VrstaUsluge vu) throws Exception {
+        sendRequest(Operacije.ADD_VRSTA_USLUGE, vu);
+    }
+    
+    public void updateVrstaUsluge(VrstaUsluge vu) throws Exception {
+        sendRequest(Operacije.UPDATE_VRSTA_USLUGE, vu);
+    }
+    
+    public void deleteVrstaUsluge(VrstaUsluge vu) throws Exception {
+        sendRequest(Operacije.DELETE_VRSTA_USLUGE, vu);
+    }
+    
+    //Turisticka agencija
+    public ArrayList<TuristickaAgencija> getAllTuristickaAgencija() throws Exception {
+        return (ArrayList<TuristickaAgencija>) sendRequest(Operacije.GET_ALL_TURISTICKA_AGENCIJA, null);
+    }
+    
+    public void addTuristickaAgencija(TuristickaAgencija ta) throws Exception {
+        sendRequest(Operacije.ADD_TURISTICKA_AGENCIJA, ta);
+    }
+    
+    public void updateTuristickaAgencija(TuristickaAgencija ta) throws Exception {
+        sendRequest(Operacije.UPDATE_TURISTICKA_AGENCIJA, ta);
+    }
+    
+    public void deleteTuristickaAgencija(TuristickaAgencija ta) throws Exception {
+        sendRequest(Operacije.DELETE_TURISTICKA_AGENCIJA, ta);
+    }
+    
+    public TuristickaAgencija login(TuristickaAgencija agencija) throws Exception {
+        return (TuristickaAgencija) sendRequest(Operacije.LOGIN, agencija);
+    }
+    
+    public void logout(TuristickaAgencija ulogovana) throws Exception {
+        sendRequest(Operacije.LOGOUT, ulogovana);
+    }
+    
+    //StavkaRezervacije
+    public ArrayList<StavkaRezervacije> getAllStavkaRezervacije() throws Exception {
+        return (ArrayList<StavkaRezervacije>) sendRequest(Operacije.GET_ALL_STAVKE_REZERVACIJE, null);
+    }
+    
+    public void addStavkaRezervacije(StavkaRezervacije s) throws Exception {
+        sendRequest(Operacije.ADD_STAVKA_REZERVACIJE, s);
+    }
+    
+    public void deleteStavkaRezervacije(StavkaRezervacije sr) throws Exception {
+        sendRequest(Operacije.DELETE_STAVKA_REZERVACIJE, sr);
+    }
+    
+    //TAVU
+    public ArrayList<TAVU> getAllTAVU() throws Exception {
+        return (ArrayList<TAVU>) sendRequest(Operacije.GET_ALL_TAVU, null);
+    }
+    
+    public void addTAVU(TAVU t) throws Exception {
+        sendRequest(Operacije.ADD_TAVU, t);
+    }
+    
+    public void deleteTAVU(TAVU t) throws Exception {
+        sendRequest(Operacije.DELETE_TAVU, t);
     }
 
     private Object sendRequest(int operation, Object data) throws Exception {

@@ -242,9 +242,29 @@ public class FormaKlijent extends javax.swing.JDialog {
             String telefon = jTextFieldTelefon.getText();
             String email = jTextFieldEmail.getText();
             
+            if(ime.length()>30){
+                JOptionPane.showMessageDialog(this, "Ime mora imati manje od 30 slova!", "Greska!", JOptionPane.ERROR_MESSAGE);
+                return;
+            }else if(prezime.length()>30){
+                JOptionPane.showMessageDialog(this, "Prezime mora imati manje od 30 slova!", "Greska!", JOptionPane.ERROR_MESSAGE);
+                return;
+            }else if(adresa.length()>100){
+                JOptionPane.showMessageDialog(this, "Adresa mora imati manje od 100 slova!", "Greska!", JOptionPane.ERROR_MESSAGE);
+                return;
+            }else if(telefon.length()>14){
+                JOptionPane.showMessageDialog(this, "Telefon mora imati manje od 14 cifara!", "Greska!", JOptionPane.ERROR_MESSAGE);
+                return;
+            }else if(email.length()>30){
+                JOptionPane.showMessageDialog(this, "Email mora imati manje od 100 slova!", "Greska!", JOptionPane.ERROR_MESSAGE);
+                return;
+            }else if(!email.contains("@") || !email.contains(".")){
+                JOptionPane.showMessageDialog(this, "Format email-a neispravan!", "Greska!", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
             Nacionalnost nacionalnost = (Nacionalnost) jComboBoxNacionalnost.getSelectedItem();
             
-            Klijent k = new Klijent(null, ime, prezime, adresa, telefon, email, nacionalnost);
+            Klijent k = new Klijent(null, ime, prezime, telefon, email, adresa, nacionalnost);
             KlijentskiKontroler.getInstance().addKlijent(k);
             MainForma mf = (MainForma) getParent();
             mf.popuniKlijente();
@@ -268,9 +288,29 @@ public class FormaKlijent extends javax.swing.JDialog {
             String telefon = jTextFieldTelefon.getText();
             String email = jTextFieldEmail.getText();
             
+            if(ime.length()>30){
+                JOptionPane.showMessageDialog(this, "Ime mora imati manje od 30 slova!", "Greska!", JOptionPane.ERROR_MESSAGE);
+                return;
+            }else if(prezime.length()>30){
+                JOptionPane.showMessageDialog(this, "Prezime mora imati manje od 30 slova!", "Greska!", JOptionPane.ERROR_MESSAGE);
+                return;
+            }else if(adresa.length()>100){
+                JOptionPane.showMessageDialog(this, "Adresa mora imati manje od 100 slova!", "Greska!", JOptionPane.ERROR_MESSAGE);
+                return;
+            }else if(telefon.length()>14){
+                JOptionPane.showMessageDialog(this, "Telefon mora imati manje od 14 cifara!", "Greska!", JOptionPane.ERROR_MESSAGE);
+                return;
+            }else if(email.length()>30){
+                JOptionPane.showMessageDialog(this, "Email mora imati manje od 100 slova!", "Greska!", JOptionPane.ERROR_MESSAGE);
+                return;
+            }else if(!email.contains("@") || !email.contains(".")){
+                JOptionPane.showMessageDialog(this, "Format email-a neispravan!", "Greska!", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
             Nacionalnost nacionalnost = (Nacionalnost) jComboBoxNacionalnost.getSelectedItem();
             
-            Klijent k = new Klijent(pomocni.getIdKlijent(), ime, prezime, telefon, adresa, email, nacionalnost);
+            Klijent k = new Klijent(pomocni.getIdKlijent(), ime, prezime, telefon, email, adresa, nacionalnost);
             KlijentskiKontroler.getInstance().updateKlijent(k);
             
             MainForma mf = (MainForma) getParent();

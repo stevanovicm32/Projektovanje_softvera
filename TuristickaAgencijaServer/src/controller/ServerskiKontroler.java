@@ -8,6 +8,8 @@ import domain.Destinacija;
 import domain.Klijent;
 import domain.Nacionalnost;
 import domain.Rezervacija;
+import domain.StavkaRezervacije;
+import domain.TAVU;
 import domain.TuristickaAgencija;
 import domain.VrstaUsluge;
 import java.util.ArrayList;
@@ -28,6 +30,12 @@ import so.rezervacija.SOAddRezervacija;
 import so.rezervacija.SODeleteRezervacija;
 import so.rezervacija.SOGetAllRezervacija;
 import so.rezervacija.SOUpdateRezervacija;
+import so.stavkarezervacije.SOAddStavkaRezervacije;
+import so.stavkarezervacije.SODeleteStavkaRezervacije;
+import so.stavkarezervacije.SOGetAllStavkaRezervacije;
+import so.tavu.SOAddTAVU;
+import so.tavu.SODeleteTAVU;
+import so.tavu.SOGetAllTAVU;
 import so.turistickaagencija.SOAddTuristickaAgencija;
 import so.turistickaagencija.SODeleteTuristickaAgencija;
 import so.turistickaagencija.SOGetAllTuristickaAgencija;
@@ -187,5 +195,31 @@ public class ServerskiKontroler {
         return so.getLista();
     }
     
+    public Object getAllStavkaRezervacije() throws Exception {
+        SOGetAllStavkaRezervacije so = new SOGetAllStavkaRezervacije();
+        so.templateExecute(new StavkaRezervacije());
+        return so.getLista();
+    }
     
+    public void addStavkaRezervacije(StavkaRezervacije sr) throws Exception {
+        (new SOAddStavkaRezervacije()).templateExecute(sr);
+    }
+    
+    public void deleteStavkaRezervacije(StavkaRezervacije sr) throws Exception {
+        (new SODeleteStavkaRezervacije()).templateExecute(sr);
+    }
+    
+    public Object getAllTAVU() throws Exception {
+        SOGetAllTAVU so = new SOGetAllTAVU();
+        so.templateExecute(new TAVU());
+        return so.getLista();
+    }
+    
+    public void addTAVU(TAVU t) throws Exception {
+        (new SOAddTAVU()).templateExecute(t);
+    }
+    
+    public void deleteTAVU(TAVU t) throws Exception {
+        (new SODeleteTAVU()).templateExecute(t);
+    }
 }
